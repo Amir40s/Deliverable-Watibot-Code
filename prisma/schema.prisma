@@ -1,0 +1,1449 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../lib/generated/prisma"
+  binaryTargets   = ["native", "debian-openssl-3.0.x", "linux-musl-openssl-3.0.x"]
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  extensions = [vector]
+}
+
+model Organization {
+  id                                String             @id @default(cuid())
+  name                              String
+  slug                              String             @unique
+  logo                              String?
+  domain                            String?            @unique
+  plan                              String             @default("free")
+  status                            String             @default("active")
+  maxUsers                          Int                @default(5)
+  createdAt                         DateTime           @default(now())
+  updatedAt                         DateTime           @updatedAt
+  companySize                       String?
+  industry                          String?
+  whatsappNumber                    String?
+  metaAccessToken                   String?
+  metaAppId                         String?
+  metaAppSecret                     String?
+  metaCatalogAccessToken            String?
+  metaBusinessId                    String?
+  whatsappBusinessId                String?
+  whatsappBusinessName              String?
+  whatsappPhoneNumberId             String?
+  businessAddress                   String?
+  businessDescription               String?
+  businessEmail                     String?
+  businessVertical                  String?
+  businessWebsites                  Json?
+  businessLogo                      String?
+  ownerId                           String?
+  instagramBusinessId               String?
+  tiktokAccessToken                 String?
+  tiktokCreatorId                   String?
+  tiktokExpiresAt                   DateTime?
+  tiktokRefreshToken                String?
+  facebookPageId                    String?
+  facebookPageName                  String?
+  facebookAdAccountId               String?
+  embedded_setup_done_at            DateTime?
+  whatsapp_onboarding_raw_data      Json?
+  whatsapp_token_info_data          Json?
+  facebookPageAccessToken           String?
+  instagramAccessToken              String?
+  facebookAdsAccessToken            String?
+  shopifyIntegrationToken           String?            @unique
+  shopifyStoreUrl                   String?
+  shopifyAccessToken                String?
+  shopifyOrderAutomationEnabled     Boolean            @default(false)
+  shopifyOrderTemplate              String?            @default("order_confirmation")
+  shopifyOrderTemplateLanguage      String?            @default("en_US")
+  shopifyAutomation                 Json?
+  timezone                          String?            @default("UTC")
+  woocommerceConsumerKey            String?
+  woocommerceConsumerSecret         String?
+  woocommerceOrderAutomationEnabled Boolean            @default(false)
+  woocommerceAutomation             Json?
+  woocommerceStoreUrl               String?
+  woocommerceWebhookSecret          String?
+  aiAssistantId                     String?
+  isAiBotEnabled                    Boolean            @default(false)
+  aiVoiceResponseEnabled            Boolean            @default(false)
+  agentRoutingMode                  String             @default("manual")
+  aiProvider                        String?            @default("openai")
+  aiProviderApiKey                  String?
+  aiApiKeys                         Json?
+  geminiCacheId                     String?
+  contacts                          Contact[]
+  contactGroups                     ContactGroup[]
+  departments                       Department[]
+  flows                             Flow[]
+  owner                             User?              @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  products                          Product[]
+  quickReplies                      QuickReply[]
+  scheduledMessages                 ScheduledMessage[]
+  shopifyOrders                     ShopifyOrder[]
+  tags                              Tag[]
+  users                             User[]
+  welcomeMessages                   WelcomeMessage[]
+  woocommerceOrders                 WooCommerceOrder[]
+  knowledgeBase                     KnowledgeBase[]
+  knowledgeChunks                   KnowledgeChunk[]
+  activityLogs                      ActivityLog[]
+  bookedCalls                       BookedCall[]
+  externalWebhooks                  ExternalWebhook[]
+  widgetConfig                      Json?
+  adminNotes                        String?            @db.Text
+  vendorConfig                      Json?
+  aiAgents                          AIAgent[]
+  aiFunctions                       AIFunction[]
+  aiMcpServers                      AIMcpServer[]
+  mediaLibraryItems                 MediaLibraryItem[]
+  aiExecutions                      AIAgentExecution[]
+  pipelines                         Pipeline[]
+  autoAssignmentEnabled             Boolean            @default(true)
+  roundRobinFallbackEnabled         Boolean            @default(true)
+  roundRobinBatchSize               Int                @default(1)
+  roundRobinCurrentCount            Int                @default(0)
+  roundRobinLastAgentId             String?
+  roundRobinConfig                  Json?
+  tagAssignmentRules                TagAssignmentRule[]
+  agentChatAssignmentRules          AgentChatAssignmentRule[]
+  assignmentHistories               ChatAssignmentHistory[]
+  isWindowRemindersEnabled          Boolean            @default(true)
+  windowReminderRules               WindowReminderRule[]
+  windowReminderLogs                WindowReminderLog[]
+  aiRoutingRules                    AiRoutingRule[]
+  whatsappConnectionMethod          String?            @default("manual")
+  whatsappQRSessions                WhatsAppQRSession[]
+  businessProfile                   BusinessProfile?
+  businessServices                  BusinessService[]
+  orders                            Order[]
+  appointments                      Appointment[]
+  whatsappChannels                  WhatsAppChannel[]
+
+  @@index([slug])
+  @@index([domain])
+  @@index([ownerId])
+}
+
+model User {
+  id                  String          @id @default(cuid())
+  name                String?
+  email               String          @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  role                UserRole        @default(USER)
+  status              UserStatus      @default(PENDING)
+  organizationId      String?
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
+  lastLoginAt         DateTime?
+  onboardingCompleted Boolean         @default(false)
+  onboardingStep      Int             @default(0)
+  phoneNumber         String?
+  departmentId        String?
+  permissions         Json?
+  trialLimitDays      Int?
+  trialStartDate      DateTime?       @default(now())
+  accounts            Account[]
+  deviceSettings      DeviceSetting[]
+  sentMessages        Message[]       @relation("SentMessages")
+  ownedOrganizations  Organization[]  @relation("OrganizationOwner")
+  sessions            Session[]
+  department          Department?     @relation(fields: [departmentId], references: [id])
+  organization        Organization?   @relation(fields: [organizationId], references: [id])
+  assignedContacts    Contact[]       @relation("ContactAssignments")
+  isAutoAssignEligible Boolean        @default(true)
+  availabilityStatus   String         @default("ONLINE")
+  assignedContactsDirect Contact[]    @relation("ContactAssignedAgent")
+  tagAssignmentRules   TagAssignmentRule[]
+  agentChatAssignmentRules AgentChatAssignmentRule[] @relation("AgentAssignmentRules")
+  assignedHistories    ChatAssignmentHistory[] @relation("HistoryAssignedAgent")
+  prevAssignedHistories ChatAssignmentHistory[] @relation("HistoryPreviousAgent")
+  createdHistories     ChatAssignmentHistory[] @relation("HistoryAssignedByUser")
+  activityLogs       ActivityLog[]
+  bookedCalls        BookedCall[]
+  aiRoutingRules     AiRoutingRule[] @relation("AiRoutingAssignedAgent")
+
+  @@index([email])
+  @@index([organizationId])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+}
+
+model Contact {
+  id                   String               @id @default(cuid())
+  organizationId       String
+  waId                 String
+  name                 String?
+  whatsappName         String?
+  profilePic           String?
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+  lastMessage          String?
+  lastMessageAt        DateTime             @default(now())
+  lastInboundMessageAt DateTime?
+  windowExpiresAt      DateTime?
+  windowStatus         String?              @default("ACTIVE")
+  unreadCount          Int                  @default(0)
+  email                String?
+  firstName            String?
+  lastName             String?
+  isBlocked            Boolean              @default(false)
+  isManualPinned       Boolean              @default(false)
+  isAiBotEnabled       Boolean              @default(true)
+  isWebhookEnabled     Boolean              @default(true)
+  disabledWebhookIds   String[]             @default([])
+  aiThreadId           String?
+  notes                String?
+  customAttributes     Json?
+  platform             Platform             @default(WHATSAPP)
+  isAutoCreated        Boolean              @default(false)
+  organization         Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  groups               ContactGroupMember[]
+  flowExecutions       FlowExecution[]
+  messages             Message[]
+  scheduledMessages    ScheduledMessage[]
+  assignedUsers        User[]               @relation("ContactAssignments")
+  tags                 Tag[]                @relation("ContactToTag")
+  aiAgentId            String?
+  aiAgent              AIAgent?             @relation(fields: [aiAgentId], references: [id], onDelete: SetNull)
+  assignedAgentId      String?
+  assignmentType       String?
+  assignedAt           DateTime?
+  assignedAgent        User?                @relation("ContactAssignedAgent", fields: [assignedAgentId], references: [id], onDelete: SetNull)
+  assignmentHistories  ChatAssignmentHistory[]
+  windowReminderLogs   WindowReminderLog[]
+  orders               Order[]
+  appointments         Appointment[]
+
+  @@unique([organizationId, platform, waId])
+  @@index([organizationId])
+  @@index([organizationId, unreadCount])
+  @@index([organizationId, lastMessageAt])
+  @@index([lastMessageAt])
+  @@index([assignedAgentId])
+  @@index([windowExpiresAt])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  contactId String
+  wamid     String?  @unique
+  type      String
+  direction String
+  status    String
+  content   String?
+  mediaUrl  String?
+  rawBody   Json?
+  createdAt DateTime @default(now())
+  senderId  String?
+  platform  Platform @default(WHATSAPP)
+  updatedAt DateTime @default(now()) @updatedAt
+  // Native Reply Fields
+  replyToId        String?
+  replyToWaId      String?
+  replyPreview     String?
+  replySenderName  String?
+  replyMessageType String?
+
+  replyTo          Message?  @relation("MessageReplies", fields: [replyToId], references: [id], onDelete: SetNull)
+  replies          Message[] @relation("MessageReplies")
+
+  channelId String?
+  channel   WhatsAppChannel? @relation(fields: [channelId], references: [id], onDelete: SetNull)
+
+  contact   Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  sender    User?    @relation("SentMessages", fields: [senderId], references: [id])
+
+  @@index([contactId])
+  @@index([channelId])
+  @@index([contactId, createdAt])
+  @@index([contactId, direction])
+  @@index([createdAt])
+  @@index([direction, createdAt])
+  @@index([senderId])
+  @@index([replyToId])
+  @@index([replyToWaId])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  vendor    String
+  isAuto    Boolean  @default(false)
+  plan      String
+  startDate DateTime
+  endDate   DateTime
+  amount    Decimal  @db.Decimal(10, 2)
+  currency  String   @default("USD")
+  frequency String
+  status    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SystemConfig {
+  id                        String   @id @default(cuid())
+  logoLightTheme            String?
+  smallLogo                 String?
+  favicon                   String?
+  platformName              String   @default("Wati Bot")
+  seoDescription            String?
+  supportEmail              String   @default("info@watibot.pro")
+  officeAddress             String?
+  systemTimezone            String   @default("Karachi")
+  defaultLanguage           String   @default("en")
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+  disallowDisposableEmails  Boolean  @default(false)
+  enableVendorRegistration  Boolean  @default(true)
+  privacyPolicy             String?
+  sendWelcomeEmail          Boolean  @default(false)
+  userTerms                 String?
+  vendorEmailActivation     Boolean  @default(false)
+  vendorTerms               String?
+  currencyCode              String   @default("USD")
+  currencyName              String   @default("U.S. Dollar")
+  currencySymbol            String   @default("$")
+  facebookLoginEnabled      Boolean  @default(true)
+  googleLoginEnabled        Boolean  @default(true)
+  manualWhatsappOnboarding  Boolean  @default(true)
+  useEnvMailSettings        Boolean  @default(true)
+  facebookAppId             String?
+  facebookAppSecret         String?
+  facebookCallbackUrl       String?
+  googleCallbackUrl         String?
+  googleClientId            String?
+  googleClientSecret        String?
+  apiDocsUrl                String?
+  campaignMessageDelay      Int      @default(0)
+  enableResponseMessages    Boolean  @default(true)
+  footerCodeAll             String?
+  footerCodeLoggedIn        String?
+  googleRecaptchaEnabled    Boolean  @default(false)
+  googleRecaptchaKey        String?
+  googleRecaptchaSecret     String?
+  jobProcessingMode         String   @default("CRON")
+  msTranslatorKey           String?
+  msTranslatorRegion        String?
+  pusherAppId               String?
+  pusherCluster             String?
+  pusherKey                 String?
+  pusherSecret              String?
+  queueWorkerConfirmed      Boolean  @default(false)
+  webhookStorageMethod      String   @default("SYNC")
+  allowUserThemeChange      Boolean  @default(true)
+  darkThemeColors           Json?
+  disableBgImage            Boolean  @default(false)
+  excelImportLimit          Int      @default(5000)
+  externalHomePageUrl       String?
+  headCode                  String?
+  homePageType              String   @default("INTERNAL")
+  lightThemeColors          Json?
+  embeddedSignupAppId       String?
+  embeddedSignupAppSecret   String?
+  embeddedSignupConfigId    String?
+  enableEmbeddedSignup      Boolean  @default(false)
+  enableWhatsAppCoexistence Boolean  @default(false)
+  adminEmail                String?
+  backupEmail               String?
+  backupScheduleTime        String?  @default("15:00")
+  backupLastSentKey         String?
+  backupLastSentAt          DateTime?
+  cloudinaryApiKey          String?
+  cloudinaryApiSecret       String?
+  cloudinaryCloudName       String?
+  storageDriver             String?  @default("r2")
+  r2AccountId               String?
+  r2AccessKeyId             String?
+  r2SecretAccessKey         String?
+  r2BucketName              String?
+  r2PublicUrl               String?
+  r2Endpoint                String?
+  metaAppName               String?
+  smtpFrom                  String?
+  smtpHost                  String?
+  smtpPassword              String?
+  smtpPort                  Int?
+  smtpUser                  String?
+  metaWebhookVerifyToken    String?
+  trialLimitDays            Int      @default(15)
+  termsOfService            String?
+  aiProvider                String   @default("openai")
+  aiProviderApiKey          String?
+  aiSystemPrompt            String?
+  aiTemperature             Float    @default(0.1)
+  stripePublishableKey      String?
+  stripeSecretKey           String?
+  stripeWebhookSecret       String?
+  payfastEnabled            Boolean  @default(false)
+  payfastMerchantId         String?
+  payfastMerchantName       String?
+  payfastSecuredKey         String?
+  payfastEnvironment        String   @default("sandbox")
+  payfastTokenUrl           String?
+  payfastCheckoutUrl        String?
+  payfastCurrencyCode       String?  @default("PKR")
+  payfastStoreId            String?
+  payfastDefaultCustomerMobile String?
+  instagramConfigId         String?
+  tutorialVideos            Json?
+  whatsappNumber            String?
+  metaAccessToken           String?
+  whatsappBusinessId        String?
+  whatsappBusinessName      String?
+  whatsappPhoneNumberId     String?
+  whatsapp_token_info_data  Json?
+  whatsappOtpTemplate               String?
+  whatsappPasswordResetTemplate     String?
+  whatsappSubscriptionAlertTemplate String?
+  subAlertCheckTime                 String?  @default("12:00 PM")
+  subAlertTimezone                  String?  @default("Asia/Karachi")
+  subAlert5DaysEnabled              Boolean  @default(false)
+  subAlert5DaysTemplate             String?
+  subAlert1DayEnabled               Boolean  @default(false)
+  subAlert1DayTemplate              String?
+  subAlertLastRunDate               String?
+  apkDownloadUrl                    String?
+  playStoreUrl                      String?
+  appStoreUrl                       String?
+}
+
+model PaymentTransaction {
+  id                   String   @id @default(cuid())
+  provider             String
+  basketId             String   @unique
+  organizationId       String
+  userId               String?
+  planSlug             String
+  billingCycle         String
+  amount               Decimal  @db.Decimal(10, 2)
+  currency             String   @default("PKR")
+  status               String   @default("pending")
+  gatewayTransactionId String?
+  rawPayload           Json?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model InstalledAddon {
+  id               String      @id @default(cuid())
+  addonId          String      @unique
+  name             String
+  installedVersion String
+  status           AddonStatus @default(ACTIVE)
+  installedAt      DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+}
+
+model ContactGroup {
+  id                String               @id @default(cuid())
+  organizationId    String
+  name              String
+  description       String?
+  color             String?              @default("#075E54")
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  organization      Organization         @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contacts          ContactGroupMember[]
+  scheduledMessages ScheduledMessage[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model ContactGroupMember {
+  id        String       @id @default(cuid())
+  contactId String
+  groupId   String
+  createdAt DateTime     @default(now())
+  contact   Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  group     ContactGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, groupId])
+  @@index([contactId])
+  @@index([groupId])
+}
+
+model Flow {
+  id             String          @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  isActive       Boolean         @default(false)
+  trigger        Json
+  nodes          Json
+  edges          Json
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  welcomeMessage String?
+  platform       String?         @default("ALL")
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  executions     FlowExecution[]
+
+  @@index([organizationId])
+  @@index([isActive])
+}
+
+model FlowExecution {
+  id        String    @id @default(cuid())
+  flowId    String
+  contactId String?
+  status    String
+  startedAt DateTime  @default(now())
+  endedAt   DateTime?
+  logs      Json
+  context   Json
+  error     String?
+  contact   Contact?  @relation(fields: [contactId], references: [id])
+  flow      Flow      @relation(fields: [flowId], references: [id], onDelete: Cascade)
+
+  @@index([flowId])
+  @@index([contactId])
+  @@index([status])
+  @@index([startedAt])
+}
+
+model StaticPage {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  description String?
+  showInMenu  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Department {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  users          User[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model Tag {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  color          String?      @default("#10B981")
+  category       String?      @default("General")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contacts       Contact[]    @relation("ContactToTag")
+  pipelineStages PipelineStage[]
+  tagAssignmentRules TagAssignmentRule[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model ScheduledMessage {
+  id               String        @id @default(cuid())
+  organizationId   String
+  contactId        String?
+  groupId          String?
+  content          String
+  mediaUrl         String?
+  scheduledAt      DateTime
+  status           String        @default("PENDING")
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  templateLanguage String?
+  templateName     String?
+  templateParams   Json?
+  type             String        @default("SCHEDULED")
+  buttons          Json?
+  attempts         Int           @default(0)
+  lastError        String?
+  lockedAt         DateTime?
+  platform         String        @default("WHATSAPP")
+  lastSentToContactId String?
+  lastSentAt          DateTime?
+  nextSendAt          DateTime?
+  nextContactId       String?
+  totalRecipients     Int?
+  sentCount           Int?          @default(0)
+  channelId           String?
+  channel             WhatsAppChannel? @relation(fields: [channelId], references: [id], onDelete: SetNull)
+  contact          Contact?      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  group            ContactGroup? @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  organization     Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([channelId])
+  @@index([organizationId, status, scheduledAt])
+  @@index([scheduledAt])
+  @@index([status])
+  @@index([type])
+}
+
+model Plan {
+  id               String   @id @default(cuid())
+  name             String
+  slug             String   @unique
+  isEnabled        Boolean  @default(true)
+  maxContacts      Int      @default(-1)
+  maxCampaigns     Int      @default(-1)
+  maxBotReplies    Int      @default(-1)
+  maxBotFlows      Int      @default(-1)
+  maxCustomFields  Int      @default(-1)
+  maxTeamMembers   Int      @default(-1)
+  aiChatBotEnabled Boolean  @default(false)
+  apiWebhookAccess Boolean  @default(false)
+  monthlyEnabled   Boolean  @default(false)
+  monthlyPrice     Decimal? @db.Decimal(10, 2)
+  quarterlyEnabled Boolean  @default(false)
+  quarterlyPrice   Decimal? @db.Decimal(10, 2)
+  yearlyEnabled    Boolean  @default(false)
+  yearlyPrice      Decimal? @db.Decimal(10, 2)
+  currency         String   @default("USD")
+  modulesAccess    Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model DeviceSetting {
+  id                   String   @id @default(cuid())
+  userId               String
+  deviceId             String   @unique
+  deviceName           String?
+  notificationsEnabled Boolean  @default(true)
+  lastActiveAt         DateTime @default(now())
+  createdAt            DateTime @default(now())
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model QuickReply {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  type           String       @default("text")
+  content        String?
+  fileUrl        String?
+  fileName       String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model WelcomeMessage {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  content        String
+  mediaUrl       String?
+  mediaType      String?
+  isActive       Boolean      @default(true)
+  priority       Int          @default(0)
+  delaySeconds   Int          @default(0)
+  conditions     Json         @default("[]")
+  conditionLogic String       @default("OR")
+  triggerLog     Json?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  platform       String       @default("ALL")
+  templateName     String?
+  templateLanguage String?
+  templateParams   Json?
+  buttons          Json?
+  sequenceItems    Json?      @default("[]")
+  assignTagId      String?
+  assignAgentId    String?
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([isActive])
+  @@index([platform])
+}
+
+model ShopifyOrder {
+  id                String       @id @default(cuid())
+  organizationId    String
+  shopifyOrderId    String
+  orderNumber       String
+  totalPrice        String
+  currency          String
+  customerPhone     String?
+  customerEmail     String?
+  status            String
+  paymentStatus     String?
+  fulfillmentStatus String?
+  tags              String?
+  lineItems         Json?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  organization      Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, shopifyOrderId])
+  @@index([organizationId])
+}
+
+model Product {
+  id               String       @id @default(cuid())
+  organizationId   String
+  shopifyProductId String?
+  name             String
+  description      String?
+  price            Decimal      @db.Decimal(10, 2)
+  currency         String       @default("USD")
+  imageUrl         String?
+  sku              String?
+  category         String?      @default("General")
+  stock            Int          @default(100)
+  variants         Json?
+  isAvailable      Boolean      @default(true)
+  status           String       @default("active")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  platform         String?      @default("shopify")
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, shopifyProductId])
+  @@index([organizationId])
+  @@index([category])
+  @@index([isAvailable])
+}
+
+model WooCommerceOrder {
+  id             String       @id @default(cuid())
+  organizationId String
+  wooOrderId     String
+  orderNumber    String
+  totalPrice     String
+  currency       String
+  customerPhone  String?
+  customerEmail  String?
+  status         String
+  paymentStatus  String?
+  tags           String?
+  lineItems      Json?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, wooOrderId])
+  @@index([organizationId])
+}
+
+enum AddonStatus {
+  ACTIVE
+  UPDATING
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  USER
+  GUEST
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING
+  TRIAL
+}
+
+enum Platform {
+  WHATSAPP
+  INSTAGRAM
+  FACEBOOK
+  TIKTOK
+}
+
+model KnowledgeBase {
+  id             String             @id @default(cuid())
+  organizationId String
+  title          String
+  content        String             @db.Text
+  status         String             @default("active")
+  fileName       String?
+  sourceUrl      String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  chunks         KnowledgeChunk[]
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  agentFiles     AgentFile[]
+
+  @@index([organizationId])
+}
+
+model KnowledgeChunk {
+  id              String         @id @default(cuid())
+  knowledgeBaseId String
+  organizationId  String
+  content         String         @db.Text
+  embedding       Unsupported("vector(1536)")
+  createdAt       DateTime       @default(now())
+
+  knowledgeBase   KnowledgeBase  @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+  organization    Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([knowledgeBaseId])
+}
+
+model ActivityLog {
+  id             String        @id @default(cuid())
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail      String?
+  userName       String?
+  action         String
+  module         String
+  target         String?
+  details        String?       @db.Text
+  status         String        @default("success")
+  isRead         Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+
+  @@index([organizationId])
+  @@index([organizationId, createdAt])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([module])
+}
+
+model BookedCall {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  date           String
+  time           String
+  phoneNumber    String
+  status         String       @default("PENDING")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([userId])
+}
+
+model ExternalWebhook {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  targetUrl      String
+  secretKey      String
+  events         String[]
+  isActive       Boolean      @default(true)
+  isAiAgent      Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model AgentFile {
+  id              String         @id @default(cuid())
+  aiAgentId       String
+  knowledgeBaseId String
+  createdAt       DateTime       @default(now())
+
+  aiAgent         AIAgent        @relation(fields: [aiAgentId], references: [id], onDelete: Cascade)
+  knowledgeBase   KnowledgeBase  @relation(fields: [knowledgeBaseId], references: [id], onDelete: Cascade)
+
+  @@unique([aiAgentId, knowledgeBaseId])
+  @@index([aiAgentId])
+  @@index([knowledgeBaseId])
+}
+
+model AIAgent {
+  id                 String             @id @default(cuid())
+  organizationId     String
+  name               String
+  aiProvider         String?            @default("openai")
+  aiProviderApiKey   String?
+  aiAssistantId      String?
+  instructions       String?            @db.Text
+  isDefault          Boolean            @default(false)
+  model              String?            @default("gpt-4o-mini")
+  temperature        Float?             @default(0.1)
+  maxTokens          Int?               @default(2048)
+  reasoningEffort    String?            @default("medium")
+  googleSpreadsheetId String?
+  googleSheetName     String?            @default("Sheet1")
+  platforms          String[]           @default(["ALL"])
+  agentType          String             @default("lead_collector")
+  customVariables    Json               @default("[]")
+  destinations       String[]           @default(["spreadsheet"])
+  keywordResponses   Json               @default("[]")
+  delaySeconds       Int?               @default(0)
+  posWebhookUrl      String?
+  posWebhookSecret   String?
+  posWebhookEnabled  Boolean?           @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  organization       Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  agentFiles         AgentFile[]
+  contacts           Contact[]
+  aiFunctions        AIFunction[]
+  aiMcpServers       AIMcpServer[]
+  executions         AIAgentExecution[]
+
+  @@index([organizationId])
+}
+
+model AIFunction {
+  id             String       @id @default(cuid())
+  organizationId String
+  aiAgentId      String?
+  name           String
+  description    String?      @db.Text
+  fields         Json         @default("[]")
+  googleSpreadsheetId String?
+  googleSheetName     String?
+  finalMessage   String?      @db.Text
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  aiAgent        AIAgent?     @relation(fields: [aiAgentId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([aiAgentId])
+  @@index([isActive])
+}
+
+model AIMcpServer {
+  id             String       @id @default(cuid())
+  organizationId String
+  aiAgentId      String?
+  name           String
+  description    String?      @db.Text
+  url            String
+  authType       String       @default("none")
+  accessToken    String?
+  apiKey         String?
+  customHeaders  Json?
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  aiAgent        AIAgent?     @relation(fields: [aiAgentId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([aiAgentId])
+  @@index([isActive])
+}
+
+model SystemAuditLog {
+  id             String        @id @default(cuid())
+  userId         String?
+  userEmail      String?
+  userName       String?
+  action         String
+  module         String        @default("Global Backup")
+  target         String?
+  details        String?       @db.Text
+  status         String        @default("success")
+  createdAt      DateTime      @default(now())
+
+  @@index([createdAt])
+}
+
+model MediaLibraryItem {
+  id              String       @id @default(cuid())
+  organizationId  String
+  name            String
+  originalName    String?
+  relativePath    String?
+  url             String
+  storageProvider String       @default("local")
+  mimeType        String?
+  fileSize        Int?
+  type            String       @default("image")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([type])
+  @@index([storageProvider])
+}
+
+model AIAgentExecution {
+  id                 String       @id @default(cuid())
+  organizationId     String
+  contactId          String?
+  contactName        String?
+  contactPhone       String?
+  aiAgentId          String?
+  aiAgentName        String?
+  provider           String?
+  model              String?
+  userPrompt         String       @db.Text
+  retrievedChunks    Json?        @default("[]")
+  systemPromptUsed   String?      @db.Text
+  rawAiOutput        String?      @db.Text
+  parsedMessage      String?      @db.Text
+  extractedLeadData  Json?
+  sheetSaved         Boolean      @default(false)
+  spreadsheetId      String?
+  sheetName          String?
+  sheetRowData       Json?
+  durationMs         Int          @default(0)
+  status             String       @default("success")
+  error              String?      @db.Text
+  createdAt          DateTime     @default(now())
+
+  organization       Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  aiAgent            AIAgent?     @relation(fields: [aiAgentId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([aiAgentId])
+  @@index([contactId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+model Pipeline {
+  id             String          @id @default(cuid())
+  organizationId String
+  name           String          @default("Lead Journey")
+  description    String?
+  isDefault      Boolean         @default(true)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  organization   Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  stages         PipelineStage[]
+
+  @@unique([organizationId, name])
+  @@index([organizationId])
+}
+
+model PipelineStage {
+  id             String       @id @default(cuid())
+  pipelineId     String
+  organizationId String
+  name           String
+  order          Int          @default(0)
+  color          String?      @default("#10B981")
+  tagId          String?
+  ruleType       String       @default("TAG")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  pipeline       Pipeline     @relation(fields: [pipelineId], references: [id], onDelete: Cascade)
+  tag            Tag?         @relation(fields: [tagId], references: [id], onDelete: SetNull)
+
+  @@index([pipelineId])
+  @@index([organizationId])
+  @@index([tagId])
+}
+
+model TagAssignmentRule {
+  id             String       @id @default(cuid())
+  organizationId String
+  tagId          String
+  agentId        String
+  priority       Int          @default(0)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  tag            Tag          @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  agent          User         @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, tagId, agentId])
+  @@index([organizationId])
+  @@index([tagId])
+  @@index([agentId])
+  @@index([priority])
+}
+
+model ChatAssignmentHistory {
+  id               String       @id @default(cuid())
+  organizationId   String
+  contactId        String
+  agentId          String?
+  previousAgentId  String?
+  assignmentType   String       // 'manual', 'tag', 'round_robin'
+  assignedByUserId String?
+  tagId            String?
+  createdAt        DateTime     @default(now())
+
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact          Contact      @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  agent            User?        @relation("HistoryAssignedAgent", fields: [agentId], references: [id], onDelete: SetNull)
+  previousAgent    User?        @relation("HistoryPreviousAgent", fields: [previousAgentId], references: [id], onDelete: SetNull)
+  assignedByUser   User?        @relation("HistoryAssignedByUser", fields: [assignedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([contactId])
+  @@index([organizationId])
+  @@index([agentId])
+  @@index([createdAt])
+}
+
+model AgentChatAssignmentRule {
+  id               String       @id @default(cuid())
+  organizationId   String
+  agentId          String
+  assignmentType   String       // 'SPECIFIC_CHAT' | 'AFTER_AGENT_CREATION' | 'ALL_CHATS' | 'TAG_BASED' | 'DATETIME_RANGE'
+  specificChatIds  String[]     @default([])
+  tagIds           String[]     @default([])
+  startDate        DateTime?
+  endDate          DateTime?
+  startTime        String?      // e.g. "10:00"
+  endTime          String?      // e.g. "18:00"
+  timezone         String?      @default("UTC")
+  priority         Int          @default(0)
+  isActive         Boolean      @default(true)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  organization     Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  agent            User         @relation("AgentAssignmentRules", fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([agentId])
+  @@index([priority])
+  @@index([isActive])
+}
+
+model WindowReminderRule {
+  id                   String              @id @default(cuid())
+  organizationId       String
+  name                 String
+  minutesBeforeExpiry  Int                 // e.g. 60, 50, 30, 10
+  messageType          String              @default("CUSTOM") // "CUSTOM" (text, media, buttons)
+  textContent          String?             @db.Text
+  headerType           String?             @default("NONE") // "NONE" | "TEXT" | "IMAGE" | "VIDEO" | "DOCUMENT"
+  headerText           String?
+  mediaUrl             String?
+  mediaType            String?             // "image" | "video" | "audio" | "document"
+  footerText           String?
+  buttons              Json?               // Array of button objects: [{ id, title, type: 'reply' | 'url', url }]
+  templateName         String?
+  templateLanguage     String?             @default("en")
+  templateComponents   Json?
+  isActive             Boolean             @default(true)
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  organization         Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  logs                 WindowReminderLog[]
+
+  @@index([organizationId])
+  @@index([minutesBeforeExpiry])
+  @@index([isActive])
+}
+
+model WindowReminderLog {
+  id                   String              @id @default(cuid())
+  organizationId       String
+  contactId            String
+  ruleId               String
+  windowExpiresAt      DateTime            // Specific 24h window expiry timestamp for idempotency
+  status               String              // "SENT" | "FAILED" | "SKIPPED"
+  sentAt               DateTime            @default(now())
+  messageId            String?
+  error                String?             @db.Text
+
+  organization         Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact              Contact             @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  rule                 WindowReminderRule  @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  @@unique([contactId, ruleId, windowExpiresAt])
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([ruleId])
+  @@index([status])
+  @@index([sentAt])
+}
+
+model AiRoutingRule {
+  id              String        @id @default(cuid())
+  organizationId  String
+  name            String
+  topic           String        @db.Text
+  keywords        String[]      @default([])
+  agentId         String
+  transferMessage String        @default("We will connect you to our agent.") @db.Text
+  priority        Int           @default(0)
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  agent           User          @relation("AiRoutingAssignedAgent", fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([agentId])
+  @@index([isActive])
+  @@index([priority])
+}
+
+model WhatsAppQRSession {
+  id              String        @id @default(cuid())
+  organizationId  String
+  sessionToken    String        @unique
+  status          String        @default("pending")
+  qrData          String?       @db.Text
+  errorReason     String?
+  expiresAt       DateTime
+  connectedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([sessionToken])
+  @@index([status])
+}
+
+model WhatsAppChannel {
+  id                    String             @id @default(cuid())
+  organizationId        String
+  name                  String
+  phoneNumber           String
+  phoneNumberId         String?
+  businessAccountId     String?
+  accessToken           String?
+  connectionMethod      String             @default("qr")
+  status                String             @default("CONNECTED")
+  isDefault             Boolean            @default(false)
+  qrSessionToken        String?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+
+  organization          Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  messages              Message[]
+  scheduledMessages     ScheduledMessage[]
+
+  @@unique([organizationId, phoneNumber])
+  @@index([organizationId])
+  @@index([phoneNumberId])
+  @@index([status])
+}
+
+model BusinessProfile {
+  id                    String       @id @default(cuid())
+  organizationId        String       @unique
+  businessType          String       @default("hybrid") // "store" | "appointment" | "hybrid"
+  storeName             String?
+  description           String?      @db.Text
+  currency              String       @default("PKR")
+  deliveryCharges       Decimal?     @default(0) @db.Decimal(10, 2)
+  deliveryAreas         String?      @db.Text
+  deliveryTime          String?      @default("2-4 working days")
+  paymentMethods        String[]     @default(["Cash on Delivery", "Bank Transfer"])
+  returnPolicy          String?      @db.Text
+  faqs                  Json?        @default("[]") // [{ question, answer }]
+  customInstructions    String?      @db.Text
+  
+  // Appointment settings
+  workingDays           String[]     @default(["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+  openingTime           String?      @default("09:00")
+  closingTime           String?      @default("18:00")
+  slotDuration          Int?         @default(30) // in minutes
+  bookingRules          String?      @db.Text
+  appointmentPolicies   String?      @db.Text
+  staffMembers          String[]     @default([])
+  
+  createdAt             DateTime     @default(now())
+  updatedAt             DateTime     @updatedAt
+  
+  organization          Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+model BusinessService {
+  id              String        @id @default(cuid())
+  organizationId  String
+  name            String
+  description     String?       @db.Text
+  price           Decimal       @db.Decimal(10, 2)
+  currency        String        @default("PKR")
+  durationMinutes Int           @default(30)
+  staff           String?
+  category        String?       @default("General")
+  isActive        Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  organization    Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  appointments    Appointment[]
+
+  @@index([organizationId])
+  @@index([isActive])
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  orderNumber     String       @unique // e.g. "ORD-20260907-8391"
+  organizationId  String
+  contactId       String?
+  
+  // Customer details
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  deliveryAddress String       @db.Text
+  
+  // Order items: [{ productId, productName, variant, size, color, quantity, unitPrice, subtotal }]
+  items           Json         @default("[]")
+  subtotal        Decimal      @db.Decimal(10, 2)
+  deliveryFee     Decimal      @default(0) @db.Decimal(10, 2)
+  totalAmount     Decimal      @db.Decimal(10, 2)
+  currency        String       @default("PKR")
+  
+  // Statuses & Payment
+  paymentMethod   String       @default("Cash on Delivery")
+  paymentStatus   String       @default("PENDING") // PENDING, PAID, CANCELLED, REFUNDED
+  status          String       @default("PENDING") // PENDING, CONFIRMED, PROCESSING, SHIPPED, DELIVERED, CANCELLED
+  
+  notes           String?      @db.Text
+  source          String       @default("AI_CHAT") // AI_CHAT, MANUAL, WHATSAPP
+  
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  
+  organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact         Contact?     @relation(fields: [contactId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([orderNumber])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Appointment {
+  id                String           @id @default(cuid())
+  appointmentNumber String           @unique // e.g. "APT-20260907-2910"
+  organizationId    String
+  contactId         String?
+  serviceId         String?
+  
+  serviceName       String
+  customerName      String
+  customerPhone     String
+  customerEmail     String?
+  staffName         String?
+  
+  date              String           // "YYYY-MM-DD"
+  time              String           // "HH:MM" 24hr format
+  durationMinutes   Int              @default(30)
+  price             Decimal          @default(0) @db.Decimal(10, 2)
+  currency          String           @default("PKR")
+  
+  status            String           @default("CONFIRMED") // PENDING, CONFIRMED, COMPLETED, CANCELLED, RESCHEDULED
+  notes             String?          @db.Text
+  source            String           @default("AI_CHAT") // AI_CHAT, MANUAL, WHATSAPP
+  
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  
+  organization      Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  contact           Contact?         @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  service           BusinessService? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([contactId])
+  @@index([serviceId])
+  @@index([appointmentNumber])
+  @@index([date])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model SubscriptionAlertLog {
+  id                  String    @id @default(cuid())
+  subscriptionId      String
+  organizationId      String
+  userId              String?
+  recipientPhone      String
+  alertType           String    // "5_DAYS" | "1_DAY"
+  templateName        String?
+  templateLanguage    String?   @default("en")
+  subscriptionEndDate DateTime?
+  status              String    @default("PENDING") // "PENDING" | "PROCESSING" | "SENT" | "FAILED"
+  attempts            Int       @default(0)
+  scheduledFor        DateTime  @default(now())
+  lockedAt            DateTime?
+  sentAt              DateTime?
+  messageId           String?
+  error               String?   @db.Text
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  @@index([subscriptionId, alertType, status])
+  @@index([organizationId, alertType, status])
+  @@index([status, scheduledFor])
+}

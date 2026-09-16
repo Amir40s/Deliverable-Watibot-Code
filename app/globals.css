@@ -1,0 +1,659 @@
+@import "invalid-theme-layer.css";
+@import "tailwindcss/corrupted";
+
+:root {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+  /* Wise Brand Palette */
+  --wise-near-black: #0e0f0c;
+  --wise-green: var(--primary-color, #22c55e);
+  --wise-green-dark: #ffffff;
+  --wise-light-mint: #e2f6d5;
+  --wise-pastel-green: #cdffad;
+
+  /* Semantic Colors */
+  --wise-positive: #054d28;
+  --wise-danger: #d03238;
+  --wise-warning: #ffd11a;
+  --wise-info-bg: rgba(56, 200, 255, 0.1);
+  --wise-orange: #ffc091;
+
+  /* Neutrals */
+  --wise-warm-dark: #454745;
+  --wise-gray: #868685;
+  --wise-light-surface: #e8ebe6;
+
+  /* Shadcn/Standard Mappings */
+  --background: var(--background-color, #ffffff);
+  --foreground: var(--wise-near-black);
+  --card: #ffffff;
+  --card-foreground: var(--wise-near-black);
+  --popover: #ffffff;
+  --popover-foreground: var(--wise-near-black);
+  --primary: var(--primary-color, var(--wise-green));
+  --primary-foreground: var(--wise-green-dark);
+  --secondary: var(--secondary-color, rgba(22, 51, 0, 0.08));
+  --secondary-foreground: var(--wise-near-black);
+  --muted: var(--wise-light-surface);
+  --muted-foreground: var(--wise-warm-dark);
+  --accent: var(--wise-pastel-green);
+  --accent-foreground: var(--wise-green-dark);
+  --destructive: var(--wise-danger);
+  --destructive-foreground: #ffffff;
+  --border: rgba(14, 15, 12, 0.12);
+  --input: var(--wise-light-surface);
+  --ring: var(--primary-color, var(--wise-green));
+
+  /* Spacing & Radius */
+  --radius-minimal: 2px;
+  --radius-standard: 10px;
+  --radius-card-sm: 16px;
+  --radius-medium: 20px;
+  --radius-card: 30px;
+  --radius-section: 40px;
+  --radius-mega: 1000px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-ring: rgba(14, 15, 12, 0.12) 0px 0px 0px 1px;
+  --shadow-inset: rgb(134, 134, 133) 0px 0px 0px 1px inset;
+
+  /* Legacy / Compatibility */
+  --sidebar: var(--sidebar-color, #ffffff);
+  --sidebar-foreground: #64748b;
+  --sidebar-active-bg: var(--primary-color, #22c55e);
+  --sidebar-active-foreground: #ffffff;
+  --header-bg: #ffffff;
+  --accent-neon-green: var(--primary-color, #00B074);
+  --accent-neon-blue: var(--secondary-color, #3b82f6);
+  --chat-bubble-outgoing: var(--chatBubble-color, #d9fdd3);
+  
+  /* Dashboard Global Font - Change this variable to change font everywhere */
+  --dashboard-font: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), var(--font-chakma), sans-serif;
+}
+
+.dark {
+  --background: var(--background-color, #0b0f1a);
+  --foreground: #f9fafb;
+  --card: #1f2937;
+  --card-foreground: #f9fafb;
+  --popover: #1f2937;
+  --popover-foreground: #f9fafb;
+  --primary: var(--primary-color, var(--wise-green));
+  --primary-foreground: var(--wise-green-dark);
+  --secondary: var(--secondary-color, rgba(255, 255, 255, 0.05));
+  --secondary-foreground: #f9fafb;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f9fafb;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #f9fafb;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.05);
+  --ring: var(--primary-color, var(--wise-green));
+  --sidebar: var(--sidebar-color, #0f172a);
+  --sidebar-active-bg: var(--primary-color, #22c55e);
+  --chat-bubble-outgoing: var(--chatBubble-color, #005c4b);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--color-card);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chat-bubble-outgoing: var(--chat-bubble-outgoing);
+  --color-sidebar: var(--sidebar);
+
+  --radius-minimal: var(--radius-minimal);
+  --radius-standard: var(--radius-standard);
+  --radius-card-sm: var(--radius-card-sm);
+  --radius-medium: var(--radius-medium);
+  --radius-card: var(--radius-card);
+  --radius-section: var(--radius-section);
+  --radius-mega: var(--radius-mega);
+  --radius-pill: var(--radius-pill);
+
+  --font-sans: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), sans-serif;
+  --font-display: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), sans-serif;
+  
+  --shadow-ring: var(--shadow-ring);
+  --shadow-inset: var(--shadow-inset);
+}
+
+body {
+  --dashboard-font: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), var(--font-chakma), sans-serif;
+  @apply bg-background text-foreground antialiased min-h-screen relative;
+  font-family: var(--dashboard-font);
+  font-weight: 400;
+  font-feature-settings: "calt" 1;
+  line-height: 1.44;
+}
+
+body::before {
+  content: "";
+  @apply absolute inset-0 pointer-events-none opacity-0 z-[-1];
+  background-image: none;
+}
+
+/* Custom Scrollbar Styling - Completely Hidden */
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin !important;
+  -ms-overflow-style: auto !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 10px !important;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+html {
+  overflow: auto;
+  scroll-behavior: smooth;
+}
+
+/* WhatsApp-style chat messages background */
+.chat-messages-bg {
+  background-color: #ece5dd;
+}
+
+.chat-messages-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cdefs%3E%3Cpattern id='wa' width='70' height='70' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='12' cy='8' r='1.2' fill='%23d4c5b0' opacity='0.5'/%3E%3Ccircle cx='45' cy='22' r='1' fill='%23d4c5b0' opacity='0.45'/%3E%3Ccircle cx='28' cy='55' r='1.1' fill='%23d4c5b0' opacity='0.5'/%3E%3Ccircle cx='58' cy='38' r='0.9' fill='%23d4c5b0' opacity='0.4'/%3E%3Ccircle cx='8' cy='48' r='1' fill='%23d4c5b0' opacity='0.45'/%3E%3Ccircle cx='52' cy='8' r='0.8' fill='%23d4c5b0' opacity='0.4'/%3E%3Ccircle cx='35' cy='35' r='1' fill='%23d4c5b0' opacity='0.45'/%3E%3Ccircle cx='18' cy='28' r='0.9' fill='%23d4c5b0' opacity='0.4'/%3E%3Ccircle cx='62' cy='58' r='1.1' fill='%23d4c5b0' opacity='0.5'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23wa)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark .chat-messages-bg {
+  background-color: #0b141a;
+}
+
+.dark .chat-messages-bg::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cdefs%3E%3Cpattern id='wa-dark' width='70' height='70' patternUnits='userSpaceOnUse'%3E%3Ccircle cx='12' cy='8' r='1.2' fill='%231a2c38' opacity='0.6'/%3E%3Ccircle cx='45' cy='22' r='1' fill='%231a2c38' opacity='0.5'/%3E%3Ccircle cx='28' cy='55' r='1.1' fill='%231a2c38' opacity='0.6'/%3E%3Ccircle cx='58' cy='38' r='0.9' fill='%231a2c38' opacity='0.5'/%3E%3Ccircle cx='8' cy='48' r='1' fill='%231a2c38' opacity='0.5'/%3E%3Ccircle cx='52' cy='8' r='0.8' fill='%231a2c38' opacity='0.45'/%3E%3Ccircle cx='35' cy='35' r='1' fill='%231a2c38' opacity='0.5'/%3E%3Ccircle cx='18' cy='28' r='0.9' fill='%231a2c38' opacity='0.45'/%3E%3Ccircle cx='62' cy='58' r='1.1' fill='%231a2c38' opacity='0.6'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100%25' height='100%25' fill='url(%23wa-dark)'/%3E%3C/svg%3E");
+}
+
+/* Wise Typography Utilities */
+@utility wise-display-mega {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7.88rem);
+  font-weight: 900;
+  line-height: 0.85;
+  font-feature-settings: "calt" 1;
+}
+
+@utility wise-display-hero {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.85;
+  font-feature-settings: "calt" 1;
+}
+
+@utility wise-heading-section {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 0.85;
+  font-feature-settings: "calt" 1;
+}
+
+@utility wise-body {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.44;
+  letter-spacing: -0.108px;
+  font-feature-settings: "calt" 1;
+}
+
+/* Wise Component Utilities */
+@utility wise-button-primary {
+  @apply rounded-pill px-4 py-1.5 transition-transform duration-200 ease-out hover:scale-[1.05] active:scale-[0.95];
+  background-color: var(--wise-green);
+  color: var(--wise-green-dark);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility wise-button-secondary {
+  @apply rounded-pill px-4 py-1.5 transition-transform duration-200 ease-out hover:scale-[1.05] active:scale-[0.95];
+  background-color: rgba(22, 51, 0, 0.08);
+  color: var(--wise-near-black);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility wise-card {
+  @apply rounded-card border border-border bg-white transition-all duration-300;
+  box-shadow: var(--shadow-ring);
+}
+
+@utility wise-section {
+  @apply rounded-section border border-border bg-white;
+  box-shadow: var(--shadow-ring);
+}
+
+/* Animations & Transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Existing Custom Utilities */
+.floating-sidebar {
+  @apply fixed left-4 top-4 bottom-4 z-50 rounded-3xl transition-all duration-300 ease-in-out;
+  @apply bg-white border border-border;
+  box-shadow: var(--shadow-ring);
+}
+
+/* Sidebar Collapse Logic */
+:root {
+  --sidebar-width: 18rem;
+  --sidebar-collapsed-width: 6rem;
+}
+
+body.sidebar-collapsed aside {
+  width: var(--sidebar-collapsed-width) !important;
+}
+
+.main-content-transition {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+body.sidebar-collapsed .main-content-transition {
+  margin-left: var(--sidebar-collapsed-width) !important;
+  width: calc(100% - var(--sidebar-collapsed-width)) !important;
+}
+
+@media (max-width: 768px) {
+  aside { transform: translateX(-100%); }
+  .main-content-transition { margin-left: 0 !important; width: 100% !important; }
+  body.sidebar-open aside { transform: translateX(0); width: var(--sidebar-width) !important; }
+}
+
+.plus-jakarta-forced, .plus-jakarta-forced * {
+  font-family: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), sans-serif !important;
+}
+
+.plus-jakarta-forced input {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+.plus-jakarta-forced input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark .plus-jakarta-forced input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .plus-jakarta-forced textarea,
+.dark .plus-jakarta-forced select {
+  background-color: rgba(15, 23, 42, 0.75) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(51, 65, 85, 0.85) !important;
+  color-scheme: dark;
+}
+
+.dark .plus-jakarta-forced input::placeholder,
+.dark .plus-jakarta-forced textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Chrome/Edge autofill dynamic background and text color force */
+.plus-jakarta-forced input:-webkit-autofill,
+.plus-jakarta-forced input:-webkit-autofill:hover, 
+.plus-jakarta-forced input:-webkit-autofill:focus, 
+.plus-jakarta-forced input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1e293b !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark .plus-jakarta-forced input:-webkit-autofill,
+.dark .plus-jakarta-forced input:-webkit-autofill:hover,
+.dark .plus-jakarta-forced input:-webkit-autofill:focus,
+.dark .plus-jakarta-forced input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgb(15 23 42) inset !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+}
+
+/* Checkbox dynamic light-theme force */
+.plus-jakarta-forced input[type="checkbox"] {
+  background-color: #ffffff !important;
+  color: #00a884 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.dark .plus-jakarta-forced input[type="checkbox"] {
+  background-color: rgb(15 23 42) !important;
+  color: #00a884 !important;
+  border-color: rgb(51 65 85) !important;
+}
+
+/* Forced Light Mode overrides (to prevent dark mode styling conflicts on auth pages) */
+.forced-light, .forced-light * {
+  color-scheme: light !important;
+}
+
+.dark .forced-light {
+  --background: var(--background-color, #ffffff) !important;
+  --foreground: var(--wise-near-black) !important;
+  --card: #ffffff !important;
+  --card-foreground: var(--wise-near-black) !important;
+  --popover: #ffffff !important;
+  --popover-foreground: var(--wise-near-black) !important;
+  --primary: var(--primary-color, var(--wise-green)) !important;
+  --primary-foreground: var(--wise-green-dark) !important;
+  --secondary: var(--secondary-color, rgba(22, 51, 0, 0.08)) !important;
+  --secondary-foreground: var(--wise-near-black) !important;
+  --muted: var(--wise-light-surface) !important;
+  --muted-foreground: var(--wise-warm-dark) !important;
+  --accent: var(--wise-pastel-green) !important;
+  --accent-foreground: var(--wise-green-dark) !important;
+  --destructive: var(--wise-danger) !important;
+  --destructive-foreground: #ffffff !important;
+  --border: rgba(14, 15, 12, 0.12) !important;
+  --input: var(--wise-light-surface) !important;
+  --ring: var(--primary-color, var(--wise-green)) !important;
+}
+
+/* Ensure inputs inside forced-light do not get dark mode overrides */
+.dark .plus-jakarta-forced.forced-light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .plus-jakarta-forced.forced-light textarea,
+.dark .plus-jakarta-forced.forced-light select {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+@utility wise-display-hero {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: 0.85;
+  font-feature-settings: "calt" 1;
+}
+
+@utility wise-heading-section {
+  font-family: var(--font-display), sans-serif;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 900;
+  line-height: 0.85;
+  font-feature-settings: "calt" 1;
+}
+
+@utility wise-body {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.44;
+  letter-spacing: -0.108px;
+  font-feature-settings: "calt" 1;
+}
+
+/* Wise Component Utilities */
+@utility wise-button-primary {
+  @apply rounded-pill px-4 py-1.5 transition-transform duration-200 ease-out hover:scale-[1.05] active:scale-[0.95];
+  background-color: var(--wise-green);
+  color: var(--wise-green-dark);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility wise-button-secondary {
+  @apply rounded-pill px-4 py-1.5 transition-transform duration-200 ease-out hover:scale-[1.05] active:scale-[0.95];
+  background-color: rgba(22, 51, 0, 0.08);
+  color: var(--wise-near-black);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility wise-card {
+  @apply rounded-card border border-border bg-white transition-all duration-300;
+  box-shadow: var(--shadow-ring);
+}
+
+@utility wise-section {
+  @apply rounded-section border border-border bg-white;
+  box-shadow: var(--shadow-ring);
+}
+
+/* Animations & Transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Existing Custom Utilities */
+.floating-sidebar {
+  @apply fixed left-4 top-4 bottom-4 z-50 rounded-3xl transition-all duration-300 ease-in-out;
+  @apply bg-white border border-border;
+  box-shadow: var(--shadow-ring);
+}
+
+/* Sidebar Collapse Logic */
+:root {
+  --sidebar-width: 18rem;
+  --sidebar-collapsed-width: 6rem;
+}
+
+body.sidebar-collapsed aside {
+  width: var(--sidebar-collapsed-width) !important;
+}
+
+.main-content-transition {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width));
+  transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+}
+
+body.sidebar-collapsed .main-content-transition {
+  margin-left: var(--sidebar-collapsed-width) !important;
+  width: calc(100% - var(--sidebar-collapsed-width)) !important;
+}
+
+@media (max-width: 768px) {
+  aside { transform: translateX(-100%); }
+  .main-content-transition { margin-left: 0 !important; width: 100% !important; }
+  body.sidebar-open aside { transform: translateX(0); width: var(--sidebar-width) !important; }
+}
+
+.plus-jakarta-forced, .plus-jakarta-forced * {
+  font-family: var(--font-plus-jakarta), 'Plus Jakarta Sans', var(--font-inter), sans-serif !important;
+}
+
+.plus-jakarta-forced input {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+.plus-jakarta-forced input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark .plus-jakarta-forced input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .plus-jakarta-forced textarea,
+.dark .plus-jakarta-forced select {
+  background-color: rgba(15, 23, 42, 0.75) !important;
+  color: #e2e8f0 !important;
+  border-color: rgba(51, 65, 85, 0.85) !important;
+  color-scheme: dark;
+}
+
+.dark .plus-jakarta-forced input::placeholder,
+.dark .plus-jakarta-forced textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Chrome/Edge autofill dynamic background and text color force */
+.plus-jakarta-forced input:-webkit-autofill,
+.plus-jakarta-forced input:-webkit-autofill:hover, 
+.plus-jakarta-forced input:-webkit-autofill:focus, 
+.plus-jakarta-forced input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1e293b !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.dark .plus-jakarta-forced input:-webkit-autofill,
+.dark .plus-jakarta-forced input:-webkit-autofill:hover,
+.dark .plus-jakarta-forced input:-webkit-autofill:focus,
+.dark .plus-jakarta-forced input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px rgb(15 23 42) inset !important;
+  -webkit-text-fill-color: #e2e8f0 !important;
+}
+
+/* Checkbox dynamic light-theme force */
+.plus-jakarta-forced input[type="checkbox"] {
+  background-color: #ffffff !important;
+  color: #00a884 !important;
+  border-color: #cbd5e1 !important;
+}
+
+.dark .plus-jakarta-forced input[type="checkbox"] {
+  background-color: rgb(15 23 42) !important;
+  color: #00a884 !important;
+  border-color: rgb(51 65 85) !important;
+}
+
+/* Forced Light Mode overrides (to prevent dark mode styling conflicts on auth pages) */
+.forced-light, .forced-light * {
+  color-scheme: light !important;
+}
+
+.dark .forced-light {
+  --background: var(--background-color, #ffffff) !important;
+  --foreground: var(--wise-near-black) !important;
+  --card: #ffffff !important;
+  --card-foreground: var(--wise-near-black) !important;
+  --popover: #ffffff !important;
+  --popover-foreground: var(--wise-near-black) !important;
+  --primary: var(--primary-color, var(--wise-green)) !important;
+  --primary-foreground: var(--wise-green-dark) !important;
+  --secondary: var(--secondary-color, rgba(22, 51, 0, 0.08)) !important;
+  --secondary-foreground: var(--wise-near-black) !important;
+  --muted: var(--wise-light-surface) !important;
+  --muted-foreground: var(--wise-warm-dark) !important;
+  --accent: var(--wise-pastel-green) !important;
+  --accent-foreground: var(--wise-green-dark) !important;
+  --destructive: var(--wise-danger) !important;
+  --destructive-foreground: #ffffff !important;
+  --border: rgba(14, 15, 12, 0.12) !important;
+  --input: var(--wise-light-surface) !important;
+  --ring: var(--primary-color, var(--wise-green)) !important;
+}
+
+/* Ensure inputs inside forced-light do not get dark mode overrides */
+.dark .plus-jakarta-forced.forced-light input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.dark .plus-jakarta-forced.forced-light textarea,
+.dark .plus-jakarta-forced.forced-light select {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #cbd5e1 !important;
+}
+
+.dark .plus-jakarta-forced.forced-light input::placeholder,
+.dark .plus-jakarta-forced.forced-light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark .plus-jakarta-forced.forced-light input:-webkit-autofill,
+.dark .plus-jakarta-forced.forced-light input:-webkit-autofill:hover,
+.dark .plus-jakarta-forced.forced-light input:-webkit-autofill:focus,
+.dark .plus-jakarta-forced.forced-light input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #1e293b !important;
+}
+
+.dark .plus-jakarta-forced.forced-light input[type="checkbox"] {
+  background-color: #ffffff !important;
+  color: #00a884 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* Custom Scrollbar Utilities */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}

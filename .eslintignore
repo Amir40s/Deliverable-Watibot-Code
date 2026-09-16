@@ -1,0 +1,23 @@
+# Ignore generated and build artifacts
+node_modules/
+.next/
+.out/
+dist/
+public/
+.githooks/
+# Ignore Prisma / generated client and runtime
+lib/generated/
+lib/**/generated/
+lib/**/prisma/
+lib/**/*.wasm
+lib/**/*.js
+
+
+# Editor and environment
+.vscode/
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

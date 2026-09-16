@@ -1,0 +1,3 @@
+ALTER TABLE "SystemConfig" ADD COLUMN IF NOT EXISTS "backupScheduleTime" TEXT DEFAULT '15:00';
+ALTER TABLE "SystemConfig" ADD COLUMN IF NOT EXISTS "backupLastSentKey" TEXT;
+ALTER TABLE "SystemConfig" ADD COLUMN IF NOT EXISTS "backupLastSentAt" TIMESTAMP(3);
